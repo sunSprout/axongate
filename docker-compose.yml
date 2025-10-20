@@ -1,0 +1,113 @@
+# AxonGate Docker Compose 配置
+# 生产环境部署编排文件
+
+version: '3.8'
+
+services:
+  # ============ PostgreSQL 数据库 ============
+  postgres:
+    image: postgres:15-alpine
+    container_name: axongate-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-ai_proxy}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}  # 必须通过 .env 提供
+    volumes:
+      - /opt/axongate/data/postgres:/var/lib/postgresql/data
+    networks:
+      - axongate-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # ============ Backend 服务（Go，闭源）============
+  backend:
+    build:
+      context: .
+      dockerfile: dockerfiles/backend.Dockerfile
+    container_name: axongate-backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=${POSTGRES_USER:-postgres}
+      - DB_PASSWORD=${POSTGRES_PASSWORD}
+      - DB_NAME=${POSTGRES_DB:-ai_proxy}
+    volumes:
+      - /opt/axongate/logs:/var/log/ai-gateway
+      - /opt/axongate/config/backend.yaml:/app/config.yaml:ro
+    networks:
+      - axongate-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O-", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # ============ Engine 服务（Rust，开源）============
+  engine:
+    build:
+      context: .
+      dockerfile: dockerfiles/engine.Dockerfile
+    container_name: axongate-engine
+    depends_on:
+      backend:
+        condition: service_healthy
+    volumes:
+      - /opt/axongate/logs:/var/log/ai-gateway
+      - /opt/axongate/config/engine.yaml:/app/config.yaml:ro
+    networks:
+      - axongate-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O-", "http://127.0.0.1:8090/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # ============ Caddy 反向代理 + 前端（开源）============
+  caddy:
+    build:
+      context: .
+      dockerfile: dockerfiles/caddy.Dockerfile
+    container_name: axongate-caddy
+    depends_on:
+      - backend
+      - engine
+    ports:
+      - "${HTTP_PORT:-80}:80"
+      - "${HTTPS_PORT:-443}:443"
+      - "${DEBUG_PORT:-8080}:8080"
+    environment:
+      - ACME_EMAIL=${ACME_EMAIL:-admin@example.com}
+      - DOMAIN=${DOMAIN:-ai.example.com}
+    volumes:
+      - /opt/axongate/data/caddy_data:/data
+      - /opt/axongate/data/caddy_config:/config
+      - /opt/axongate/config/Caddyfile:/etc/caddy/Caddyfile:ro
+    networks:
+      - axongate-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O-", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+# ============ 网络配置 ============
+networks:
+  axongate-network:
+    driver: bridge
+    name: axongate-network
+
+# 注意：
+# 1. 所有卷使用宿主机路径 /opt/axongate/，需要提前初始化（运行 scripts/init.sh）
+# 2. 敏感配置通过 .env 文件注入，不要直接在此文件中硬编码
+# 3. 首次启动会构建 Engine 和 Frontend 镜像，约需 5-10 分钟
+# 4. Backend 使用预编译二进制，需要维护人员提前放置在 bin/ 目录

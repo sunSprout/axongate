@@ -1,0 +1,49 @@
+# AxonGate .gitignore
+
+# 环境变量文件（包含敏感信息）
+.env
+
+# 日志文件
+logs/
+*.log
+*.log.*
+
+# 二进制文件（可选，取决于是否使用 Git LFS）
+# 如果使用 Git LFS 管理二进制，注释掉下面两行
+# bin/aiproxy
+# bin/dbctl
+
+# Docker 相关
+.docker/
+*.pid
+
+# 编辑器和 IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# 临时文件
+tmp/
+temp/
+*.tmp
+
+# 备份文件
+*.bak
+*.backup
+
+# 构建产物（如果本地构建）
+target/
+dist/
+build/
+node_modules/
+
+# 测试文件
+coverage/
+*.test
+*.out
+
+# 配置覆盖（本地开发）
+docker-compose.override.yml
