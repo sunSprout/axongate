@@ -146,18 +146,15 @@ AxonGate 是一个采用微服务架构的高性能 AI 模型网关系统，专�
 ### 安装步骤
 
 ```bash
-# 1. 克隆仓库（包含开源组件 Submodules）
+# 1. 克隆仓库
 # 推荐使用 HTTPS（无需配置 SSH 密钥）
-git clone --recursive https://github.com/sunSprout/axongate.git
+git clone https://github.com/sunSprout/axongate.git
 cd axongate
 
 # 如果使用 SSH（需要配置 GitHub SSH 密钥）
-# git clone --recursive git@github.com:sunSprout/axongate.git
+# git clone git@github.com:sunSprout/axongate.git
 
-# 如果克隆时忘记 --recursive，可以手动初始化 submodules：
-# git submodule update --init --recursive
-
-# 2. 初始化环境（创建 /opt/axongate/ 目录结构）
+# 2. 初始化环境（自动克隆开源组件 + 创建配置目录）
 sudo ./scripts/init.sh
 
 # 3. 配置环境变量
@@ -171,20 +168,11 @@ docker compose up -d
 ./scripts/health-check.sh
 ```
 
-#### 💡 常见问题
+#### 💡 说明
 
-**Q: Submodule 克隆失败怎么办？**
-
-如果遇到 `fatal: could not clone 'https://github.com/...'` 错误：
-
-```bash
-# 方案 1: 手动克隆 submodules（适用于网络问题）
-git clone https://github.com/sunSprout/axongate-engine.git axongate-engine
-git clone https://github.com/sunSprout/axongate-ui.git axongate-ui
-
-# 方案 2: 使用镜像站（如果 GitHub 访问受限）
-# 请联系维护人员获取国内镜像地址
-```
+- **自动化部署**：`init.sh` 脚本会自动检查并克隆 `axongate-engine` 和 `axongate-ui` 仓库
+- **无需 submodule**：不需要使用 `git clone --recursive`，部署更简单
+- **支持更新**：如需更新开源组件，删除对应目录后重新运行 `init.sh`
 
 ### 访问地址
 

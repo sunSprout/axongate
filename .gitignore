@@ -47,3 +47,9 @@ coverage/
 
 # 配置覆盖（本地开发）
 docker-compose.override.yml
+
+
+
+# sub 开源源码
+axongate-engine
+axongate-ui

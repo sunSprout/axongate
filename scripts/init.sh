@@ -15,6 +15,27 @@ if [ "$EUID" -ne 0 ]; then
     exit 1
 fi
 
+# 检查并克隆开源组件（如果不存在）
+echo "正在检查开源组件..."
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+
+if [ ! -d "$PROJECT_ROOT/axongate-engine" ] || [ -z "$(ls -A "$PROJECT_ROOT/axongate-engine")" ]; then
+    echo "正在克隆 axongate-engine..."
+    rm -rf "$PROJECT_ROOT/axongate-engine"
+    git clone https://github.com/sunSprout/axongate-engine.git "$PROJECT_ROOT/axongate-engine"
+else
+    echo "✓ axongate-engine 已存在"
+fi
+
+if [ ! -d "$PROJECT_ROOT/axongate-ui" ] || [ -z "$(ls -A "$PROJECT_ROOT/axongate-ui")" ]; then
+    echo "正在克隆 axongate-ui..."
+    rm -rf "$PROJECT_ROOT/axongate-ui"
+    git clone https://github.com/sunSprout/axongate-ui.git "$PROJECT_ROOT/axongate-ui"
+else
+    echo "✓ axongate-ui 已存在"
+fi
+
 # 创建目录结构
 echo "正在创建目录结构..."
 mkdir -p /opt/axongate/{data/{postgres,caddy_data,caddy_config},logs,config/certs}
