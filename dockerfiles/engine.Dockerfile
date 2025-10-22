@@ -48,8 +48,8 @@ RUN apk add --no-cache ca-certificates libgcc
 WORKDIR /app
 
 # 复制二进制文件
-COPY --from=builder /app/target/release/ai-gateway-engine /usr/local/bin/ai-gateway-engine
-RUN chmod +x /usr/local/bin/ai-gateway-engine
+COPY --from=builder /app/target/release/axongate-engine /usr/local/bin/axongate-engine
+RUN chmod +x /usr/local/bin/axongate-engine
 
 # 复制配置文件
 COPY config/engine.yaml /app/config.yaml
@@ -57,4 +57,4 @@ COPY config/engine.yaml /app/config.yaml
 # 服务端口
 EXPOSE 8090
 
-CMD ["ai-gateway-engine", "-c", "/app/config.yaml"]
+CMD ["axongate-engine", "-c", "/app/config.yaml"]
