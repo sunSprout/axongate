@@ -24,11 +24,11 @@ services:
     restart: unless-stopped
 
   # ============ Backend 服务（Go，闭源）============
-  backend:
+  axongate-server:
     build:
       context: .
       dockerfile: dockerfiles/backend.Dockerfile
-    container_name: axongate-backend
+    container_name: axongate-server
     depends_on:
       postgres:
         condition: service_healthy
@@ -51,13 +51,13 @@ services:
       retries: 3
 
   # ============ Engine 服务（Rust，开源）============
-  engine:
+  axongate-engine:
     build:
       context: .
       dockerfile: dockerfiles/engine.Dockerfile
     container_name: axongate-engine
     depends_on:
-      backend:
+      axongate-server:
         condition: service_healthy
     volumes:
       - /opt/axongate/logs:/var/log/ai-gateway
@@ -72,14 +72,14 @@ services:
       retries: 3
 
   # ============ Caddy 反向代理 + 前端（开源）============
-  caddy:
+  axongate-frontend:
     build:
       context: .
       dockerfile: dockerfiles/caddy.Dockerfile
-    container_name: axongate-caddy
+    container_name: axongate-frontend
     depends_on:
-      - backend
-      - engine
+      - axongate-server
+      - axongate-engine
     ports:
       - "${HTTP_PORT:-80}:80"
       - "${HTTPS_PORT:-443}:443"
@@ -91,6 +91,7 @@ services:
       - /opt/axongate/data/caddy_data:/data
       - /opt/axongate/data/caddy_config:/config
       - /opt/axongate/config/Caddyfile:/etc/caddy/Caddyfile:ro
+      - /opt/axongate/config/certs:/etc/caddy/certs:ro
     networks:
       - axongate-network
     restart: unless-stopped

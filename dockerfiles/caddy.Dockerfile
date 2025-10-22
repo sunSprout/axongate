@@ -20,6 +20,9 @@ FROM caddy:2.7-alpine
 
 WORKDIR /srv
 
+# 健康检查所需工具
+RUN apk add --no-cache wget
+
 # 复制前端构建产物
 COPY --from=frontend-builder /app/dist /srv
 

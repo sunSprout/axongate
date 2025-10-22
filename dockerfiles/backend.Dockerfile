@@ -9,9 +9,9 @@ RUN apk add --no-cache ca-certificates postgresql-client
 WORKDIR /app
 
 # 复制预编译二进制（静态链接）
-COPY bin/aiproxy /usr/local/bin/aiproxy
+COPY bin/axongate-server /usr/local/bin/axongate-server
 COPY bin/dbctl /usr/local/bin/dbctl
-RUN chmod +x /usr/local/bin/aiproxy /usr/local/bin/dbctl
+RUN chmod +x /usr/local/bin/axongate-server /usr/local/bin/dbctl
 
 # 复制配置文件和迁移文件
 COPY config/backend.yaml /app/config.yaml
@@ -26,3 +26,4 @@ EXPOSE 8080
 EXPOSE 8081
 
 ENTRYPOINT ["/entrypoint.sh"]
+CMD ["axongate-server"]

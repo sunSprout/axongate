@@ -20,14 +20,14 @@ https://localhost:443, https://127.0.0.1:443, https://10.126.126.9:443, https://
 
 	# 2. API 路由 -> Backend（第二优先级）
 	handle /api/* {
-		reverse_proxy ai-backend:8080 {
+		reverse_proxy axongate-server:8080 {
 			header_up X-Real-IP {remote_host}
 		}
 	}
 
 	# 3. AI 引擎路由 -> Engine（第三优先级）
 	handle /v1/* {
-		reverse_proxy ai-engine:8090 {
+		reverse_proxy axongate-engine:8090 {
 			header_up X-Real-IP {remote_host}
 
 			# 流式响应优化
@@ -80,14 +80,14 @@ https://localhost:443, https://127.0.0.1:443, https://10.126.126.9:443, https://
 
 	# 2. API 路由 -> Backend（第二优先级）
 	handle /api/* {
-		reverse_proxy ai-backend:8080 {
+		reverse_proxy axongate-server:8080 {
 			header_up X-Real-IP {remote_host}
 		}
 	}
 
 	# 3. AI 引擎路由 -> Engine（第三优先级）
 	handle /v1/* {
-		reverse_proxy ai-engine:8090 {
+		reverse_proxy axongate-engine:8090 {
 			header_up X-Real-IP {remote_host}
 
 			# 流式响应优化
@@ -140,14 +140,14 @@ https://localhost:443, https://127.0.0.1:443, https://10.126.126.9:443, https://
 
 	# 2. API 路由 -> Backend（第二优先级）
 	handle /api/* {
-		reverse_proxy ai-backend:8080 {
+		reverse_proxy axongate-server:8080 {
 			header_up X-Real-IP {remote_host}
 		}
 	}
 
 	# 3. AI 引擎路由 -> Engine（第三优先级）
 	handle /v1/* {
-		reverse_proxy ai-engine:8090 {
+		reverse_proxy axongate-engine:8090 {
 			header_up X-Real-IP {remote_host}
 
 			# 流式响应优化

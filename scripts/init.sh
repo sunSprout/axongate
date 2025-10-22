@@ -17,13 +17,17 @@ fi
 
 # 创建目录结构
 echo "正在创建目录结构..."
-mkdir -p /opt/axongate/{data/{postgres,caddy_data,caddy_config},logs,config}
+mkdir -p /opt/axongate/{data/{postgres,caddy_data,caddy_config},logs,config/certs}
 
 # 复制配置文件模板
 echo "正在复制配置文件模板..."
-cp config/backend.yaml.example /opt/axongate/config/backend.yaml
-cp config/engine.yaml.example /opt/axongate/config/engine.yaml
+cp config/backend.yaml /opt/axongate/config/backend.yaml
+cp config/engine.yaml /opt/axongate/config/engine.yaml
 cp config/Caddyfile /opt/axongate/config/Caddyfile
+
+# 复制证书文件（用于本地 HTTPS 测试）
+echo "正在复制自签名证书..."
+cp config/certs/* /opt/axongate/config/certs/
 
 # 设置权限
 echo "正在设置目录权限..."
