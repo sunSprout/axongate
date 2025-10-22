@@ -147,8 +147,15 @@ AxonGate 是一个采用微服务架构的高性能 AI 模型网关系统，专�
 
 ```bash
 # 1. 克隆仓库（包含开源组件 Submodules）
-git clone --recursive git@github.com:sunSprout/axongate.git
+# 推荐使用 HTTPS（无需配置 SSH 密钥）
+git clone --recursive https://github.com/sunSprout/axongate.git
 cd axongate
+
+# 如果使用 SSH（需要配置 GitHub SSH 密钥）
+# git clone --recursive git@github.com:sunSprout/axongate.git
+
+# 如果克隆时忘记 --recursive，可以手动初始化 submodules：
+# git submodule update --init --recursive
 
 # 2. 初始化环境（创建 /opt/axongate/ 目录结构）
 sudo ./scripts/init.sh
@@ -162,6 +169,21 @@ docker compose up -d
 
 # 5. 检查服务状态
 ./scripts/health-check.sh
+```
+
+#### 💡 常见问题
+
+**Q: Submodule 克隆失败怎么办？**
+
+如果遇到 `fatal: could not clone 'https://github.com/...'` 错误：
+
+```bash
+# 方案 1: 手动克隆 submodules（适用于网络问题）
+git clone https://github.com/sunSprout/axongate-engine.git axongate-engine
+git clone https://github.com/sunSprout/axongate-ui.git axongate-ui
+
+# 方案 2: 使用镜像站（如果 GitHub 访问受限）
+# 请联系维护人员获取国内镜像地址
 ```
 
 ### 访问地址

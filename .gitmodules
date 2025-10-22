@@ -1,6 +1,6 @@
 [submodule "axongate/axongate-engine"]
 	path = axongate-engine
-	url = git@github.com:sunSprout/axongate-engine.git
+	url = https://github.com/sunSprout/axongate-engine.git
 [submodule "axongate/axongate-ui"]
 	path = axongate-ui
-	url = git@github.com:sunSprout/axongate-ui.git
+	url = https://github.com/sunSprout/axongate-ui.git
