@@ -4,6 +4,9 @@
 # ============ 构建阶段 ============
 FROM rust:1.83-alpine AS builder
 
+# 替换为阿里云镜像源
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
+
 # 安装构建依赖
 RUN apk add --no-cache musl-dev openssl-dev openssl-libs-static pkgconfig
 
@@ -35,6 +38,9 @@ RUN touch src/main.rs && cargo build --release
 
 # ============ 运行阶段 ============
 FROM alpine:3.19
+
+# 替换为阿里云镜像源
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 
 # 安装运行时依赖
 RUN apk add --no-cache ca-certificates libgcc
