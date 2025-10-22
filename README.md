@@ -33,6 +33,107 @@ AxonGate 是一个采用微服务架构的高性能 AI 模型网关系统，专�
 
 ---
 
+## 📸 界面预览
+
+### 登录与仪表盘
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="images/login.png" alt="登录页面" width="600"/>
+      <br/>
+      <b>登录页面</b>
+      <br/>
+      简洁美观的登录界面，支持用户身份认证
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="images/dashboard.png" alt="仪表盘主页" width="600"/>
+      <br/>
+      <b>仪表盘主页</b>
+      <br/>
+      一目了然的系统概览，提供活跃供应商、可用模型、请求统计等关键指标
+    </td>
+  </tr>
+</table>
+
+### 配置管理
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="images/provide.png" alt="供应商管理" width="600"/>
+      <br/>
+      <b>供应商管理</b>
+      <br/>
+      管理 AI 模型供应商配置，支持 OpenAI、Anthropic 等多种服务商
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="images/model.png" alt="模型管理" width="600"/>
+      <br/>
+      <b>模型管理</b>
+      <br/>
+      配置 AI 模型参数，设置价格和状态，灵活管理模型资源
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="images/provide_token.png" alt="供应商 Token 管理" width="600"/>
+      <br/>
+      <b>供应商 Token 管理</b>
+      <br/>
+      安全管理各供应商的 API 密钥，支持加密存储和健康检测
+    </td>
+  </tr>
+</table>
+
+### 访问控制
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="images/user_token.png" alt="用户 Token 管理" width="600"/>
+      <br/>
+      <b>用户 Token 管理</b>
+      <br/>
+      生成和管理 API 访问令牌，控制系统访问权限和速率限制
+    </td>
+  </tr>
+</table>
+
+### 监控与分析
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="images/status.png" alt="使用统计" width="600"/>
+      <br/>
+      <b>使用统计与分析</b>
+      <br/>
+      实时追踪请求数、Token 消耗、费用统计和模型使用分布
+    </td>
+  </tr>
+</table>
+
+### 系统设置
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="images/setting.png" alt="系统设置" width="600"/>
+      <br/>
+      <b>个人设置</b>
+      <br/>
+      管理个人信息和系统配置，包括安全设置和系统参数
+    </td>
+  </tr>
+</table>
+
+---
+
 ## 🚀 快速启动
 
 ### 前置要求
