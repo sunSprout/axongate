@@ -4,6 +4,9 @@
 # ============ 构建阶段 ============
 FROM rust:1.83-alpine AS builder
 
+# 替换为阿里云镜像源
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
+
 # 安装构建依赖
 RUN apk add --no-cache musl-dev openssl-dev openssl-libs-static pkgconfig
 
@@ -36,14 +39,17 @@ RUN touch src/main.rs && cargo build --release
 # ============ 运行阶段 ============
 FROM alpine:3.19
 
+# 替换为阿里云镜像源
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
+
 # 安装运行时依赖
 RUN apk add --no-cache ca-certificates libgcc
 
 WORKDIR /app
 
 # 复制二进制文件
-COPY --from=builder /app/target/release/ai-gateway-engine /usr/local/bin/ai-gateway-engine
-RUN chmod +x /usr/local/bin/ai-gateway-engine
+COPY --from=builder /app/target/release/axongate-engine /usr/local/bin/axongate-engine
+RUN chmod +x /usr/local/bin/axongate-engine
 
 # 复制配置文件
 COPY config/engine.yaml /app/config.yaml
@@ -51,4 +57,4 @@ COPY config/engine.yaml /app/config.yaml
 # 服务端口
 EXPOSE 8090
 
-CMD ["ai-gateway-engine", "-c", "/app/config.yaml"]
+CMD ["axongate-engine", "-c", "/app/config.yaml"]

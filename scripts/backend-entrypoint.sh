@@ -19,5 +19,5 @@ dbctl init \
 echo "Database initialization complete!"
 
 # 启动服务
-echo "Starting AI Proxy backend..."
-exec aiproxy serve -c /app/config.yaml
+echo "Starting AxonGate backend..."
+exec axongate-server serve -c /app/config.yaml

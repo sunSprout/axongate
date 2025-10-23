@@ -4,7 +4,13 @@
 # ============ 阶段1: 构建前端 ============
 FROM node:20-alpine AS frontend-builder
 
+# 替换为阿里云镜像源
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
+
 WORKDIR /app
+
+# 配置 npm 镜像源（加速依赖下载）
+RUN npm config set registry https://registry.npmmirror.com
 
 # 复制 package 文件并安装依赖
 COPY axongate-ui/package*.json ./
@@ -18,7 +24,13 @@ RUN npm run build
 # ============ 阶段2: Caddy 运行环境 ============
 FROM caddy:2.7-alpine
 
+# 替换为阿里云镜像源
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
+
 WORKDIR /srv
+
+# 健康检查所需工具
+RUN apk add --no-cache wget
 
 # 复制前端构建产物
 COPY --from=frontend-builder /app/dist /srv

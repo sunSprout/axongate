@@ -21,7 +21,7 @@ if ! command -v docker-compose &> /dev/null && ! docker compose version &> /dev/
 fi
 
 # 定义服务列表
-SERVICES=("axongate-postgres" "axongate-backend" "axongate-engine" "axongate-caddy")
+SERVICES=("axongate-postgres" "axongate-server" "axongate-engine" "axongate-frontend")
 HEALTH_URLS=(
     "postgres:5432 (TCP)"
     "http://localhost:8080/health"
