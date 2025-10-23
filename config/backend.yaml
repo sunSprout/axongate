@@ -11,9 +11,9 @@ engine_server_port: 8081
 # PostgreSQL
 db_host: "postgres"
 db_port: 5432
-db_user: "postgres"
-db_password: "postgres123"
-db_name: "ai_proxy"
+db_user: "axongate"
+db_password: "axongate_password"
+db_name: "axongate"
 db_max_connections: 25
 db_max_idle_conns: 5
 
